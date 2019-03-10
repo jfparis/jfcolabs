@@ -6,7 +6,7 @@ import os.path
 DEFAULT_PATH = '/content/gdrive'
 NOTEBOOK_DIR = "Colab Notebooks"
 DRIVE_DIR = "My Drive"
-MODEL_DIR = "Models"
+MODEL_DIR = "TFModels"
 
 
 def get_drive_root(path=DEFAULT_PATH):
