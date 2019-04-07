@@ -1,6 +1,6 @@
 from __future__ import print_function
 from google.colab import drive
-import os.path
+import os, os.path
 
 
 DEFAULT_PATH = '/content/gdrive'
@@ -23,6 +23,40 @@ def mount_drive(path=DEFAULT_PATH):
         drive.mount(path)
 
 
-def get_model_path(project_name):
-    return os.path.join(DEFAULT_PATH, DRIVE_DIR, MODEL_DIR, project_name)
+def get_model_path(project_name, create=False):
+    path = os.path.join(DEFAULT_PATH, DRIVE_DIR, MODEL_DIR, project_name)
+    if create:
+        if not os.path.exists(path):
+            os.mkdir(path)
+    return path
 
+
+def custom_progress_text(message):
+  import progressbar
+  from string import Formatter
+
+  message_ = message.replace('(', '{')
+  message_ = message_.replace(')', '}')
+
+  keys = [key[1] for key in Formatter().parse(message_)]
+
+  ids = {}
+  for key in keys:
+    if key is not None:
+      ids[key] = float('nan')
+
+  msg = progressbar.FormatCustomText(message, ids)
+  return msg
+
+
+def create_progress_bar(text=None):
+  import progressbar
+  if text is None:
+    text = progressbar.FormatCustomText('')
+  bar = progressbar.ProgressBar(widgets=[
+      progressbar.Percentage(),
+      progressbar.Bar(),
+      progressbar.AdaptiveETA(), '  ',
+      text,
+  ])
+  return bar
